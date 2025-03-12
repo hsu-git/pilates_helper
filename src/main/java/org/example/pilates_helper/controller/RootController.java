@@ -10,7 +10,7 @@ import java.io.IOException;
 @WebServlet("/")
 public class RootController extends Controller {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        resp.getWriter().println("john pilates");
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException, ServletException {
+        view(req, resp, "index");
     }
 }
