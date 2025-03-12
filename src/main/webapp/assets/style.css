@@ -127,3 +127,7 @@ body {
         padding: 1.5rem;
     }
 }
+
+#main-image {
+    width: 100%;
+}

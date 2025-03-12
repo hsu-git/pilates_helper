@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="./style.css">
+    <link href="<%= request.getContextPath() %>/assets/style.css">
     <style>
         :root {
             --primary: #6a11cb;
@@ -150,22 +151,7 @@
 
         <!-- Pilates SVG Icon -->
         <div class="text-center">
-            <svg class="pilates-icon" viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
-                <style>
-                    .small-text { font: 8px sans-serif; fill: white; }
-                    .icon-group { margin: 2px; }
-                </style>
-                <rect width="100%" height="100%" fill="rgba(255,255,255,0.15)" rx="15" />
-                <g class="icon-group" transform="translate(50, 40)">
-                    <!-- Person Figure -->
-                    <ellipse cx="100" cy="30" rx="20" ry="20" fill="rgba(255,255,255,0.9)" />
-                    <path d="M100 50 L100 120 M80 70 L120 70 M85 150 L100 120 L115 150" stroke="rgba(255,255,255,0.9)" stroke-width="8" stroke-linecap="round" />
-                    <!-- Pilates Ring -->
-                    <ellipse cx="100" cy="90" rx="35" ry="10" stroke="rgba(255,255,255,0.9)" fill="transparent" stroke-width="4" />
-                    <text x="70" y="170" class="small-text">필라테스 링 운동 가이드</text>
-                    <text x="65" y="180" class="small-text">개인 맞춤형 트레이닝</text>
-                </g>
-            </svg>
+            <img id="main-image" src="<%= request.getContextPath() %>/images/main.webp">
         </div>
 
         <div class="rotating-text mt-3">
