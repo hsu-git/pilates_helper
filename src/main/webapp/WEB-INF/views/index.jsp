@@ -7,139 +7,7 @@
     <title>필라테스 도우미 - 개인 맞춤형 필라테스 조언</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="./style.css">
-    <link href="<%= request.getContextPath() %>/assets/style.css">
-    <style>
-        :root {
-            --primary: #6a11cb;
-            --secondary: #2575fc;
-            --light: #f8f9fa;
-            --dark: #212529;
-        }
-
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background: linear-gradient(120deg, #f5f7fa 0%, #c3cfe2 100%);
-            min-height: 100vh;
-        }
-
-        .app-container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 2rem 1rem;
-        }
-
-        .card {
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            border: none;
-            margin-bottom: 2rem;
-            background: rgba(255, 255, 255, 0.9);
-        }
-
-        .intro-card {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 2.5rem 2rem;
-        }
-
-        .question-form-card {
-            padding: 2rem;
-        }
-
-        .response-card {
-            max-height: 0;
-            opacity: 0;
-            transition: max-height 0.5s ease-out, opacity 0.5s ease-out, padding 0.5s ease-out;
-            overflow: hidden;
-            padding: 0 2rem;
-        }
-
-        .response-card.show {
-            max-height: 1000px;
-            opacity: 1;
-            padding: 2rem;
-        }
-
-        .pilates-icon {
-            width: 100%;
-            max-width: 320px;
-            margin: 1.5rem 0;
-        }
-
-        .btn-gradient {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 0.5rem 2rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-        }
-
-        .btn-gradient:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.4);
-            color: white;
-        }
-
-        #questionInput {
-            border-radius: 50px;
-            padding: 1rem 1.5rem;
-            border: 1px solid #e9ecef;
-            font-size: 1rem;
-        }
-
-        .features-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin: 2rem 0;
-        }
-
-        .feature-item {
-            background: white;
-            padding: 1.5rem;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-
-        .feature-item:hover {
-            transform: translateY(-5px);
-        }
-
-        .feature-icon {
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .rotating-text {
-            min-height: 1.5em;
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translate3d(0, 20px, 0);
-            }
-            to {
-                opacity: 1;
-                transform: translate3d(0, 0, 0);
-            }
-        }
-
-        .animate-fadeInUp {
-            animation: fadeInUp 0.6s ease forwards;
-        }
-
-        @media (max-width: 576px) {
-            .intro-card, .question-form-card, .response-card.show {
-                padding: 1.5rem;
-            }
-        }
-    </style>
+    <link href="<%= request.getContextPath() %>/assets/style.css" rel="stylesheet">
 </head>
 <body>
 <!-- Main App Container -->
@@ -162,23 +30,17 @@
     <!-- Question Form -->
     <div class="card question-form-card mb-4">
         <h3 class="mb-4 text-center">궁금한 점을 물어보세요</h3>
-        <form id="questionForm">
+        <% if (session.getAttribute("message") != null) { %>
+        <p><%= session.getAttribute("message") %></p>
+        <% } %>
+        <form id="questionForm" method="post">
             <div class="mb-3">
-                <input type="text" class="form-control" id="questionInput" placeholder="예: 허리 통증에 좋은 필라테스 동작은 무엇인가요?">
+                <input type="text" name="question" class="form-control" id="questionInput" placeholder="예: 허리 통증에 좋은 필라테스 동작은 무엇인가요?" required>
             </div>
             <div class="text-center">
                 <button type="submit" class="btn btn-gradient">질문하기</button>
             </div>
         </form>
-    </div>
-
-    <!-- Response Card (hidden initially) -->
-    <div class="card response-card" id="responseCard">
-        <h4 class="mb-3">AI 필라테스 코치 답변:</h4>
-        <div id="responseText" class="mb-4"></div>
-        <div class="text-center mt-4">
-            <button id="newQuestionBtn" class="btn btn-outline-primary">새로운 질문하기</button>
-        </div>
     </div>
 
     <!-- Features Section -->
@@ -253,42 +115,6 @@
         "필라테스를 처음 시작하시는 분들에게는 기본적인 호흡법과 코어 활성화부터 배우는 것이 중요합니다. '백그라운드 브리딩'과 '임프린트'같은 기초 동작으로 시작하여 점진적으로 난이도를 높여가는 것이 좋습니다. 주 2-3회, 30분씩 연습하면서 몸의 변화를 느껴보세요.",
         "목과 어깨 긴장 완화를 위한 필라테스 동작으로는 넥 롤(Neck Roll), 숄더 브릿지(Shoulder Bridge), 체스트 오프너(Chest Opener)가 효과적입니다. 이 동작들은 상체의 긴장을 풀고 혈액 순환을 개선하는 데 도움이 됩니다. 특히 컴퓨터 작업을 많이 하시는 분들에게 추천합니다."
     ];
-
-    // Form submit event
-    document.getElementById('questionForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const questionInput = document.getElementById('questionInput');
-        const responseCard = document.getElementById('responseCard');
-        const responseText = document.getElementById('responseText');
-
-        if (questionInput.value.trim() !== '') {
-            // Show loading state
-            responseText.innerHTML = '<div class="d-flex justify-content-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div></div>';
-            responseCard.classList.add('show');
-
-            // Simulate API call delay
-            setTimeout(() => {
-                // Get random response for demo
-                const randomResponse = sampleResponses[Math.floor(Math.random() * sampleResponses.length)];
-
-                // Display response with typing effect
-                typeWriter(responseText, randomResponse, 0, 20);
-            }, 1500);
-        }
-    });
-
-    // New question button
-    document.getElementById('newQuestionBtn').addEventListener('click', function() {
-        const responseCard = document.getElementById('responseCard');
-        const questionInput = document.getElementById('questionInput');
-
-        responseCard.classList.remove('show');
-        setTimeout(() => {
-            questionInput.value = '';
-            questionInput.focus();
-        }, 500);
-    });
 
     // Typing effect function
     function typeWriter(element, text, i, speed) {
